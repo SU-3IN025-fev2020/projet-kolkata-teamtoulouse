@@ -1,7 +1,7 @@
 # -*- coding: utf-8 -*-
 
 # Nicolas, 2020-03-20
-
+#Projet Calic Petar
 
 from __future__ import absolute_import, print_function, unicode_literals
 from gameclass import Game,check_init_game_done
@@ -49,7 +49,7 @@ def main():
     print ("Iterations: ")
     print (iterations)
     
-    iterations = iterations +1   #Pour résoudre un problème de boucle
+    iterations = iterations +1   #Sinon notre algo fait une boucle de moins
     init()
     
     
@@ -160,8 +160,11 @@ def main():
     
     pygame.quit() '''    
     
+    #--------
     #Faisons d'abord la version BreadthFirst, plus simple a implementer
     
+    #--------
+    #Methode qui renvoie les cases voisines de la position actuelle
     def voisins(pos):
         directions = [[1, 0], [0, 1], [-1, 0], [0, -1]]  #On ne peut pas aller daigonalement dans ce jeu
         res = []
@@ -174,7 +177,7 @@ def main():
         return res
                 
                 
-     
+    #------- 
 
     path = []    #Chemin que l algo doit remplir: c'est un tableau à double entrée(pour chaque joueur il existe une route)
     
@@ -182,13 +185,10 @@ def main():
     for k in range(nbPlayers):
         x,y = posPlayers[k]
         start = (x,y)
-        print("on commence pour",k)   #
         frontiere = qu.Queue()
         frontiere.put(start)
         visited = {}
         visited[start] = None
-        print(visited)              #
-        print(voisins(start))       #
         
         while not frontiere.empty():       
             it = frontiere.get()
@@ -219,15 +219,18 @@ def main():
     
     #Maintenant a chaque itération chaque joueur fait un pas
     for i in range(iterations):
-        print(i)
-        if (i == iterations-1) :
+        if(i<iterations-1):
+            print(i,"--------")
+         
+        
+        if (i == iterations-1) :     # Si c'est la derniere iteration on arrete le jeu et sort de la boucle
             pygame.quit()
             break
+       
         for j in range(nbPlayers):  # on fait bouger chaque joueur séquentiellement!
             row,col = posPlayers[j]
             route_joueur = path[j]
-            next_row , next_col = route_joueur[i+1]
-            
+            next_row , next_col = route_joueur[i+1]    
            
             if ((next_row,next_col) not in wallStates) and next_row>=0 and next_row<=19 and next_col>=0 and next_col<=19:
                 players[j].set_rowcol(next_row,next_col)    #set
@@ -239,8 +242,6 @@ def main():
                 posPlayers[j]=(row,col)
             
       
-        
-            
             # si on est à l'emplacement d'un restaurant, on s'arrête
             if (row,col) == restau[j]:
                 #o = players[j].ramasse(game.layers)
