@@ -56,7 +56,7 @@ class SpriteBuilder(object):
     def prepareSprites(self):
         self.sheet.convert_sprites()
 
-
+    #Important!!!
     def buildGroups(self):
         """ builds one group of sprites for each layer """
 
